@@ -1,119 +1,88 @@
-# reservas
+# API de Reservas de Salas
 
-Descrição
+Esta API permite o gerenciamento de reservas de salas acadêmicas, possibilitando que coordenadores de curso realizem reservas e consultem a disponibilidade.
 
-Este projeto é uma API REST desenvolvida para gerenciar a reserva de salas acadêmicas na UniEVANGÉLICA. A API permite o cadastro de blocos e salas, gerenciamento de reservas, verificação de disponibilidade, cancelamento de reservas e geração de relatórios.
+## Tecnologias Utilizadas
 
-Tecnologias Utilizadas
+- Node.js com Express
+- MongoDB com Mongoose
+- Autenticação com JWT
+- Hash de senhas com bcrypt
 
-Node.js com Express.js
+## Instalação e Execução
 
-MongoDB com Mongoose
+1. Clone este repositório:
+   ```sh
+   git clone https://github.com/seuusuario/api-reservas.git
+   cd api-reservas
+   ```
+2. Instale as dependências:
+   ```sh
+   npm install
+   ```
+3. Crie um arquivo `.env` na raiz do projeto e defina:
 
-Autenticação JWT 
+   Lembrando que o JWT_SECRET pode ser um valor aleatório desde que ninguém mais saiba
+   ```ini
+   JWT_SECRET=sua_chave_secreta
+   PORT=3000
+   ```
+5. Inicie o servidor:
+   ```sh
+   npm start
+   ```
 
-Postman para testes
+## Endpoints Principais
 
-Instalação e Configuração
+### Autenticação
 
-1. Clone o repositório
+- **Registro**: `POST /register`
+  ```json
+  {
+    "nome": "João",
+    "email": "joao@email.com",
+    "senha": "123456"
+  }
+  ```
+- **Login**: `POST /login`
+  ```json
+  {
+    "email": "joao@email.com",
+    "senha": "123456"
+  }
+  ```
+  **Resposta:**
+  ```json
+  {
+    "token": "jwt_token_aqui"
+  }
+  ```
 
-git clone https://github.com/Gustavo2Toledo/reservas.git
-cd reservas
+  Com o jwt_token 
+  Acesse a aba headers e adione uma chave(key) com o nome de "Authorization"
+  No valor adicione o id que jwt_token gerou
+### Salas
 
-2. Instalar as dependências
+- **Criar sala**: `POST /salas` (Requer autenticação)
+  ```json
+  {
+    "nome": "Sala 101",
+    "capacidade": 30
+  }
+  ```
+- **Listar salas**: `GET /salas`
 
-npm install
+### Reservas
 
-3. Configurar o ambiente
+- **Criar reserva**: `POST /reservas` (Precisa de Login)
+  ```json
+  {
+    "sala": "id_da_sala",
+    "coordenador": "Professor João",
+    "data": "2025-04-01T14:00:00.000Z"
+  }
+  ```
+- **Listar reservas**: `GET /reservas` (Requer autenticação)
+- **Cancelar reserva**: `DELETE /reservas/:id` (Requer autenticação)
 
-Crie um arquivo .env na raiz do projeto e adicione:
 
-PORT=3000
-MONGO_URI=mongodb://localhost:27017/reservas
-JWT_SECRET=sua_chave_secreta
-
-4. Iniciar a API
-
-npm start
-
-A API vai rodar em http://localhost:3000
-
-Endpoints
-
-1. Cadastro de Blocos
-
-POST /blocos
-
-Body:
-
-{
-  "nome": "Bloco A"
-}
-
-2. Cadastro de Salas
-
-POST /salas
-
-Body:
-
-{
-  "bloco": "Bloco A",
-  "nome": "Sala 101",
-  "capacidade": 30
-}
-
-3. Reservar uma Sala
-
-POST /reservas
-
-Body:
-
-{
-  "sala": "Sala 101",
-  "data": "2025-04-01T14:00:00.000Z",
-  "coordenador": "Professor João",
-  "motivo": "Reunião"
-}
-
-4. Cancelar uma Reserva
-
-DELETE /reservas/:id
-
-5. Listar Reservas
-
-GET /reservas
-
-Testes
-
-Recomenda-se testar a API com o Postman ou Insomnia.
-
-Autenticação (Opcional)
-
-Para acessar alguns endpoints, é necessário autenticação via JWT.
-
-Login:
-
-POST /auth/login
-
-Body:
-
-{
-  "email": "admin@example.com",
-  "senha": "123456"
-}
-
-Resposta:
-
-{
-  "token": "seu_token_aqui"
-}
-
-Inclua esse token no cabeçalho das requisições:
-
-Authorization: Bearer seu_token_aqui
-
-Relatórios
-
-GET /relatorios
-Gera estatísticas de uso das salas.

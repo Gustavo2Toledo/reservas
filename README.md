@@ -13,8 +13,8 @@ Esta API permite o gerenciamento de reservas de salas acadêmicas, possibilitand
 
 1. Clone este repositório:
    ```sh
-   git clone https://github.com/seuusuario/api-reservas.git
-   cd api-reservas
+   git clone https://github.com/Gustavo2Toledo/reservas
+   cd reservas
    ```
 2. Instale as dependências:
    ```sh
